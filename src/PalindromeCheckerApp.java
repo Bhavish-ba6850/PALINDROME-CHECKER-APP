@@ -2,43 +2,21 @@ import java.util.Scanner;
 
 
 public class PalindromeCheckerApp {
-    // Node class for Singly Linked List
-    static class Node {
-        char data;
-        Node next;
 
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
+
     public static void main(String[] args){
 
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Palindrome Checker Using Singly Linked List (UC8) ===");
+        System.out.println("=== Palindrome Checker Using Recursion (UC9) ===");
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
         // Optional preprocessing
         String processedInput = input.replaceAll("\\s+", "").toLowerCase();
 
-        // Convert string to linked list
-        Node head = null, tail = null;
-
-        for (int i = 0; i < processedInput.length(); i++) {
-            Node newNode = new Node(processedInput.charAt(i));
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-
-        boolean isPalindrome = checkPalindrome(head);
+        boolean isPalindrome = checkPalindrome(processedInput, 0, processedInput.length() - 1);
 
         if (isPalindrome) {
             System.out.println("Result: The given string is a Palindrome.");
@@ -49,54 +27,21 @@ public class PalindromeCheckerApp {
         scanner.close();
     }
 
-    // Method to check palindrome using linked list
-    public static boolean checkPalindrome(Node head) {
+    // Recursive method
+    public static boolean checkPalindrome(String str, int start, int end) {
 
-        if (head == null || head.next == null) {
+        // Base Condition: If pointers cross or meet
+        if (start >= end) {
             return true;
         }
 
-        // Step 1: Find middle using Fast & Slow pointers
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        // If characters don't match
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
         }
 
-        // Step 2: Reverse second half
-        Node secondHalf = reverse(slow);
-
-        // Step 3: Compare first half and reversed second half
-        Node firstHalf = head;
-        Node tempSecond = secondHalf;
-
-        while (tempSecond != null) {
-            if (firstHalf.data != tempSecond.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            tempSecond = tempSecond.next;
-        }
-
-        return true;
-    }
-
-    // Method to reverse linked list
-    public static Node reverse(Node head) {
-        Node prev = null;
-        Node current = head;
-        Node next = null;
-
-        while (current != null) {
-            next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        return prev;
+        // Recursive Call
+        return checkPalindrome(str, start + 1, end - 1);
             }
         }
 
