@@ -1,6 +1,34 @@
 import java.util.Scanner;
+import java.util.Stack;
+class PalindromeChecker {
 
+    // Public method exposed to clients
+    public boolean checkPalindrome(String input) {
 
+        if (input == null) {
+            return false;
+        }
+
+        // Normalize string (ignore spaces and case)
+        String processed = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        Stack<Character> stack = new Stack<>();
+
+        // Push characters into stack
+        for (int i = 0; i < processed.length(); i++) {
+            stack.push(processed.charAt(i));
+        }
+
+        // Compare original with reversed (via stack pop)
+        for (int i = 0; i < processed.length(); i++) {
+            if (processed.charAt(i) != stack.pop()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
 public class PalindromeCheckerApp {
 
 
@@ -9,43 +37,22 @@ public class PalindromeCheckerApp {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Case-Insensitive & Space-Ignored Palindrome Checker (UC10) ===");
+        System.out.println("=== Object-Oriented Palindrome Checker (UC11) ===");
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        // Step 1: Normalize string
-        // Remove all spaces and non-alphanumeric characters
-        // Convert to lowercase
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // Create service object
+        PalindromeChecker checker = new PalindromeChecker();
 
-        // Step 2: Apply palindrome logic (Two-pointer approach)
-        boolean isPalindrome = checkPalindrome(normalized);
+        boolean result = checker.checkPalindrome(input);
 
-        if (isPalindrome) {
+        if (result) {
             System.out.println("Result: The given string is a Palindrome.");
         } else {
             System.out.println("Result: The given string is NOT a Palindrome.");
         }
 
         scanner.close();
-    }
-
-    public static boolean checkPalindrome(String str) {
-
-        int left = 0;
-        int right = str.length() - 1;
-
-        while (left < right) {
-
-            if (str.charAt(left) != str.charAt(right)) {
-                return false;
-            }
-
-            left++;
-            right--;
-        }
-
-        return true;
             }
         }
 
